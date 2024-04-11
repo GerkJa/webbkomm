@@ -4,7 +4,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from dotenv import load_dotenv 
 
-# pip install psycopg_binary python-dotenv
+# pip install psycopg_binary python-dotenv - done
 
 load_dotenv()
 
@@ -65,7 +65,7 @@ def one_room_endpoint(id):
 
                 return cur.fetchone()
         
-@app.route("/bookings", methods=['GET', 'POST'])
+@app.route("/bookings", methods=['GET', 'POST','DELETE'])
 def bookings():
     if request.method == 'GET':
         with conn.cursor() as cur:
@@ -94,6 +94,20 @@ def bookings():
             result = cur.fetchone()
     
         return { "msg": "Du har bokat ett rum!", "result": result }
+
+    if request.method =='DELETE':
+         body = request.get_json()
+         with conn.cursor() as cur:
+              cur.execute("""
+                          DELETE FROM hotel_booking
+                          WHERE room_id = %s""",[
+                               body['room']
+              ])
+              
+            
+    return {"message":"Bokningen raderades."}
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=PORT, debug=True, ssl_context=(
