@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PORT=8091 # EGEN PORT!
+PORT=8093 # EGEN PORT!
 
 db_url = os.environ.get("DB_URL")
 print(os.environ.get("FOO"))
